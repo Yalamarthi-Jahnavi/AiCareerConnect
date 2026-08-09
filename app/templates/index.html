@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Career Connect - Premium Dashboard</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --glass-bg: rgba(17, 25, 40, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #4f46e5;
+            --primary-glow: rgba(79, 70, 229, 0.4);
+            --accent: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.4);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(79, 70, 229, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 90%, rgba(6, 182, 212, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Header */
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1.2rem 2.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #818cf8, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            padding: 0.6rem 1.4rem;
+            color: var(--text-main);
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.6);
+        }
+
+        /* Container Layout */
+        .container {
+            display: flex;
+            flex: 1;
+            padding: 2rem 2.5rem;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            height: fit-content;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.9rem 1.2rem;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 4px solid var(--accent);
+        }
+
+        /* Main Content View */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.03);
+            border-color: var(--accent);
+        }
+
+        .stat-info h4 {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+        }
+
+        .stat-info p {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .stat-icon {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #818cf8, #22d3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Forms Styling */
+        .form-group {
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        input, textarea, select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: var(--text-main);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.25);
+        }
+
+        /* AI Consultant Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 450px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 0.8rem 1.2rem;
+            border-radius: 15px;
+            line-height: 1.4;
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.08);
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-input-bar {
+            display: flex;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-top: 1px solid var(--glass-border);
+            gap: 0.5rem;
+        }
+
+        /* Voice Features */
+        .voice-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 2rem;
+            border: 2px dashed var(--glass-border);
+            border-radius: 16px;
+            margin-top: 1rem;
+        }
+
+        .mic-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .mic-btn.recording {
+            animation: pulse 1.5s infinite;
+            background: #ef4444;
+            box-shadow: 0 0 25px rgba(239, 68, 68, 0.6);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Auth Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            width: 450px;
+            max-width: 90%;
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-brain"></i> AI Career Connect
+        </div>
+        <div class="user-menu" id="auth-menu">
+            <button class="btn" onclick="openModal('login-modal')">Login</button>
+            <button class="btn btn-primary" onclick="openModal('register-modal')">Sign Up</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="nav-item active" onclick="switchTab('dashboard-tab')">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </div>
+            <div class="nav-item" onclick="switchTab('jobs-tab')">
+                <i class="fa-solid fa-briefcase"></i> Job Portal
+            </div>
+            <div class="nav-item" onclick="switchTab('ai-advisor-tab')">
+                <i class="fa-solid fa-robot"></i> AI Career Advisor
+            </div>
+            <div class="nav-item" onclick="switchTab('resume-parser-tab')">
+                <i class="fa-solid fa-file-invoice"></i> AI Resume Parser
+            </div>
+            <div class="nav-item" onclick="switchTab('speech-tab')">
+                <i class="fa-solid fa-microphone"></i> Voice Assistant
+            </div>
+        </div>
+
+        <!-- Main Content Panel -->
+        <div class="main-content">
+            
+            <!-- Dashboard View -->
+            <div id="dashboard-tab" class="tab-content active">
+                <div class="glass-card">
+                    <div class="dashboard-header">
+                        <h2>Analytics Dashboard</h2>
+                        <span id="welcome-text" style="font-weight: 500; color: var(--accent);">Welcome, Job Seeker!</span>
+                    </div>
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h4>Jobs Found</h4>
+                                <p id="stat-jobs">12</p>
+                            </div>
+                            <i class="fa-solid fa-briefcase stat-icon"></i>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h4>Applications Sent</h4>
+                                <p id="stat-apps">3</p>
+                            </div>
+                            <i class="fa-solid fa-paper-plane stat-icon"></i>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <h4>Profile Strength</h4>
+                                <p id="stat-profile">75%</p>
+                            </div>
+                            <i class="fa-solid fa-sliders stat-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jobs View -->
+            <div id="jobs-tab" class="tab-content">
+                <div class="glass-card">
+                    <div class="dashboard-header">
+                        <h2>Explore Careers</h2>
+                    </div>
+                    <div class="form-group" style="flex-direction: row; gap: 0.5rem;">
+                        <input type="text" id="job-search" placeholder="Search by role, skill, or keyword...">
+                        <button class="btn btn-primary" onclick="searchJobs()">Search</button>
+                    </div>
+                    <div id="jobs-list" style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                        <!-- Jobs injected here dynamically -->
+                        <div class="stat-card">Loading job board...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Career Advisor View -->
+            <div id="ai-advisor-tab" class="tab-content">
+                <div class="glass-card">
+                    <h2>AI Career Advisor (Mistral AI)</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Ask custom career advice, interview preparation tips, or salary analysis.</p>
+                    <div class="chat-container">
+                        <div class="chat-messages" id="advisor-chat">
+                            <div class="message bot">
+                                Hello! I'm your AI career consultant. Ask me anything about job search strategy, interview prep, or career switches!
+                            </div>
+                        </div>
+                        <div class="chat-input-bar">
+                            <input type="text" id="chat-input" placeholder="Type your career question...">
+                            <button class="btn btn-primary" onclick="sendChat()">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Parser View -->
+            <div id="resume-parser-tab" class="tab-content">
+                <div class="glass-card">
+                    <h2>Resume Analyzer</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">Upload your resume to get instant feedback and analysis from Mistral AI.</p>
+                    <div class="form-group">
+                        <label for="resume-file">Select PDF or Text File:</label>
+                        <input type="file" id="resume-file" accept=".pdf,.txt,.docx">
+                    </div>
+                    <button class="btn btn-primary" onclick="uploadResume()">Upload & Analyze</button>
+                    <div id="parser-results" style="margin-top: 1.5rem; display: none;">
+                        <h3>Analysis Results</h3>
+                        <div class="glass-card" style="margin-top: 0.5rem; background: rgba(0,0,0,0.15);" id="parser-output"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Speech Voice View -->
+            <div id="speech-tab" class="tab-content">
+                <div class="glass-card">
+                    <h2>Voice Control Hub</h2>
+                    <p style="color: var(--text-muted); text-align: center;">Press the microphone and say commands like "search for Python jobs" or "show dashboard".</p>
+                    <div class="voice-section">
+                        <div class="mic-btn" id="mic-btn" onclick="toggleRecording()">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+                        <p id="voice-status">Tap to speak</p>
+                    </div>
+                    <div id="voice-results" style="margin-top: 1.5rem; display: none;">
+                        <h4>Transcribed Command:</h4>
+                        <p id="transcription-text" style="color: var(--accent); margin-bottom: 1rem; font-weight: 500;"></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem;">Sign In</h3>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="login-email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="login-password">
+            </div>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button class="btn" onclick="closeModal('login-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="submitLogin()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem;">Create Account</h3>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="reg-user">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="reg-email">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="reg-pass">
+            </div>
+            <div class="form-group">
+                <label>Role</label>
+                <select id="reg-role">
+                    <option value="job_seeker">Job Seeker</option>
+                    <option value="employer">Employer / Recruiter</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1.5rem;">
+                <button class="btn" onclick="closeModal('register-modal')">Cancel</button>
+                <button class="btn btn-primary" onclick="submitRegister()">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player (Hidden) -->
+    <audio id="tts-audio" style="display: none;"></audio>
+
+    <script>
+        let token = localStorage.getItem("token") || "";
+        let user = JSON.parse(localStorage.getItem("user")) || null;
+
+        // Initialize App View
+        document.addEventListener("DOMContentLoaded", () => {
+            updateAuthMenu();
+            loadJobs();
+        });
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+            document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+            
+            document.getElementById(tabId).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        // Modals
+        function openModal(id) {
+            document.getElementById(id).style.display = "flex";
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        // Auth Logic
+        function updateAuthMenu() {
+            const menu = document.getElementById("auth-menu");
+            const welcomeText = document.getElementById("welcome-text");
+            if (token && user) {
+                menu.innerHTML = `
+                    <span style="font-weight: 500;">Hi, ${user.full_name || user.username}</span>
+                    <button class="btn" onclick="logout()">Logout</button>
+                `;
+                welcomeText.innerText = `Welcome, ${user.full_name || user.username}!`;
+            } else {
+                menu.innerHTML = `
+                    <button class="btn" onclick="openModal('login-modal')">Login</button>
+                    <button class="btn btn-primary" onclick="openModal('register-modal')">Sign Up</button>
+                `;
+                welcomeText.innerText = "Welcome, Job Seeker!";
+            }
+        }
+
+        function logout() {
+            localStorage.clear();
+            token = "";
+            user = null;
+            updateAuthMenu();
+            alert("Logged out successfully.");
+        }
+
+        async function submitLogin() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            try {
+                const response = await fetch("/api/auth/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    token = res.access_token;
+                    user = res.user;
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("user", JSON.stringify(user));
+                    closeModal("login-modal");
+                    updateAuthMenu();
+                } else {
+                    alert(res.message);
+                }
+            } catch (err) {
+                alert("Login failed. Check server status.");
+            }
+        }
+
+        async function submitRegister() {
+            const username = document.getElementById("reg-user").value;
+            const email = document.getElementById("reg-email").value;
+            const password = document.getElementById("reg-pass").value;
+            const role = document.getElementById("reg-role").value;
+
+            try {
+                const response = await fetch("/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, email, password, role })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    token = res.access_token;
+                    user = res.user;
+                    localStorage.setItem("token", token);
+                    localStorage.setItem("user", JSON.stringify(user));
+                    closeModal("register-modal");
+                    updateAuthMenu();
+                } else {
+                    alert(res.message);
+                }
+            } catch (err) {
+                alert("Registration failed.");
+            }
+        }
+
+        // Job Board Fetching
+        async function loadJobs(query = "") {
+            const list = document.getElementById("jobs-list");
+            const url = query ? `/api/jobs/search?q=${query}` : "/api/jobs";
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                if (data.success && data.jobs.length > 0) {
+                    list.innerHTML = data.jobs.map(job => `
+                        <div class="stat-card" style="flex-direction: column; align-items: flex-start; gap: 0.5rem; width: 100%;">
+                            <div style="display:flex; justify-content: space-between; width: 100%;">
+                                <h3 style="color:var(--accent);">${job.title}</h3>
+                                <span style="font-size:0.8rem; background:rgba(255,255,255,0.1); padding:0.2rem 0.6rem; border-radius:10px;">${job.job_type}</span>
+                            </div>
+                            <h4 style="font-weight: 500;">${job.company}</h4>
+                            <p style="font-size:0.9rem; color:var(--text-muted);">${job.description}</p>
+                            <div style="display:flex; justify-content:space-between; width:100%; margin-top:0.5rem;">
+                                <span style="font-size:0.85rem;"><i class="fa-solid fa-location-dot"></i> ${job.location || 'Remote'}</span>
+                                <button class="btn btn-primary" style="padding:0.4rem 1rem; font-size:0.85rem;" onclick="applyJob(${job.id})">Apply</button>
+                            </div>
+                        </div>
+                    `).join("");
+                } else {
+                    list.innerHTML = `<div class="stat-card">No jobs found matching your search.</div>`;
+                }
+            } catch (err) {
+                list.innerHTML = `<div class="stat-card">Failed to load jobs.</div>`;
+            }
+        }
+
+        function searchJobs() {
+            const query = document.getElementById("job-search").value;
+            loadJobs(query);
+        }
+
+        async function applyJob(jobId) {
+            if (!token) {
+                alert("Please log in to apply for jobs!");
+                openModal("login-modal");
+                return;
+            }
+            try {
+                const response = await fetch("/api/applications", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ job_id: jobId })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    alert("Application submitted successfully!");
+                } else {
+                    alert(res.message);
+                }
+            } catch (err) {
+                alert("Application failed.");
+            }
+        }
+
+        // AI Advisor Consultation
+        async function sendChat() {
+            const input = document.getElementById("chat-input");
+            const question = input.value.trim();
+            if (!question) return;
+
+            if (!token) {
+                alert("Please login to use AI advisor.");
+                openModal("login-modal");
+                return;
+            }
+
+            const chat = document.getElementById("advisor-chat");
+            chat.innerHTML += `<div class="message user">${question}</div>`;
+            input.value = "";
+            chat.scrollTop = chat.scrollHeight;
+
+            try {
+                const response = await fetch("/api/ai/career-advice", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ question })
+                });
+                const res = await response.json();
+                if (res.success) {
+                    chat.innerHTML += `<div class="message bot">${res.advice}</div>`;
+                } else {
+                    chat.innerHTML += `<div class="message bot" style="color: #ef4444;">Error: ${res.message}</div>`;
+                }
+                chat.scrollTop = chat.scrollHeight;
+            } catch (err) {
+                chat.innerHTML += `<div class="message bot" style="color: #ef4444;">Failed to connect to Advisor.</div>`;
+                chat.scrollTop = chat.scrollHeight;
+            }
+        }
+
+        // Voice Command Recording Sim
+        let mediaRecorder;
+        let audioChunks = [];
+        let isRecording = false;
+
+        function toggleRecording() {
+            const btn = document.getElementById("mic-btn");
+            const status = document.getElementById("voice-status");
+
+            if (!isRecording) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(stream => {
+                        mediaRecorder = new MediaRecorder(stream);
+                        mediaRecorder.start();
+                        btn.classList.add("recording");
+                        status.innerText = "Listening... Tap to stop";
+                        isRecording = true;
+                        audioChunks = [];
+
+                        mediaRecorder.addEventListener("dataavailable", event => {
+                            audioChunks.push(event.data);
+                        });
+
+                        mediaRecorder.addEventListener("stop", () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                            sendVoiceCommand(audioBlob);
+                        });
+                    })
+                    .catch(err => alert("Microphone access denied."));
+            } else {
+                mediaRecorder.stop();
+                btn.classList.remove("recording");
+                status.innerText = "Processing command...";
+                isRecording = false;
+            }
+        }
+
+        async function sendVoiceCommand(blob) {
+            if (!token) {
+                alert("Please login to use Voice Control.");
+                openModal("login-modal");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("audio", blob, "command.wav");
+
+            try {
+                const response = await fetch("/api/speech/voice-search", {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${token}` },
+                    body: formData
+                });
+                const res = await response.json();
+                if (res.success) {
+                    document.getElementById("voice-results").style.display = "block";
+                    document.getElementById("transcription-text").innerText = `"${res.transcribed_query}"`;
+                    document.getElementById("voice-status").innerText = "Command processed!";
+                    
+                    // Automatically filter job board if voice search was performed
+                    if (res.jobs) {
+                        switchTab("jobs-tab");
+                        document.getElementById("job-search").value = res.transcribed_query;
+                        searchJobs();
+                    }
+                } else {
+                    document.getElementById("voice-status").innerText = res.message;
+                }
+            } catch (err) {
+                document.getElementById("voice-status").innerText = "Voice process error.";
+            }
+        }
+
+        // Resume Uploader
+        async function uploadResume() {
+            const fileInput = document.getElementById("resume-file");
+            if (fileInput.files.length === 0) {
+                alert("Please select a file.");
+                return;
+            }
+            if (!token) {
+                alert("Please login to upload resumes.");
+                openModal("login-modal");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            // Simulation of parsed data display (since backend uses file storage)
+            document.getElementById("parser-results").style.display = "block";
+            document.getElementById("parser-output").innerText = "Uploading resume file for AI text extraction and analysis...";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+# This directory stores generated text-to-speech audio files.
+# TTS output files are named: tts_<uuid>.mp3

@@ -1,0 +1,48 @@
+# ─── AI Career Connect ─── Git Ignore ───
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+.venv/
+
+# Environment Variables (NEVER commit secrets)
+.env
+
+# Database
+instance/
+*.db
+*.sqlite3
+
+# Uploads (user files)
+uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Audio files (generated TTS)
+static/audio/*.mp3
+static/audio/*.wav
+
+# Logs
+*.log
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
